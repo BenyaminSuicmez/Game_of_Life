@@ -2,10 +2,8 @@ import numpy as np
 
 
 # Creating the game board
-board = np.random.choice((0,1), size=(30, 30), p=[0.7, 0.3])
+board = np.random.choice((0,1), size=(30, 30), p=[0.7, 0.3]).astype(np.uint8)
 
-# Creating a second, temporary board
-temp_board = np.zeros_like(board)
 
 shift1 = np.roll(board, shift = 1, axis=0)
 shift2 = np.roll(board, shift = -1, axis=0)
@@ -19,8 +17,12 @@ shift8 = np.roll(board, shift = (-1, 1), axis=(0, 1))
 neighbors = (shift1 + shift2 + shift3 + shift4 + shift5 + shift6 + shift7 + shift8)
 
 
+# Rule 1: Cell lives AND has 2 or 3 neighbors
+survives = (board == 1) & ((neighbors == 2) | (neighbors == 3))
 
-print(neighbors.min())
-print(neighbors.max())
-print(neighbors.shape)
+# Rule 2: Cell is dead AND has exactly 3 neighbors
+born = (board == 0) & (neighbors == 3)
+
+# Creating the temporary board
+temp_board = (survives | born).astype(np.uint8)
 
