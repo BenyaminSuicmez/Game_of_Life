@@ -8,7 +8,7 @@ Tkinter menu.
 ## The rules
 
 Every cell on the grid is either alive or dead. In each generation, all cells
-are updated simultaneously according to three rules:
+are updated simultaneously according to the following rules:
 
 - A living cell with two or three living neighbours survives.
 - A dead cell with exactly three living neighbours becomes alive.
@@ -52,6 +52,27 @@ Because `np.roll` wraps values around the edges, the grid behaves like a
 torus: the top row is adjacent to the bottom row, and the left column to the
 right one.
 
+## Population analysis
+
+The number of living cells is written to `data/population.csv` during the run,
+one row per generation. After the simulation ends, the file is read back with
+pandas and plotted with matplotlib.
+
+Running a 800x800 grid with 30% initial density for 10,000 generations produces
+a characteristic curve: the population collapses from roughly 220,000 to below
+50,000 within the first few hundred generations, then settles at around 18,000
+cells, about 3% of the grid.
+
+<img width="999" height="662" alt="linear" src="https://github.com/user-attachments/assets/b98d264b-cc23-4204-a93e-7fb76aa789b1" />
+
+Plotting the same run on a logarithmic scale makes the two phases visible. An
+exponential decay would appear as a straight line; instead the curve bends
+continuously and then flattens out entirely after roughly 5,000 generations.
+The system does not die out, it settles into an equilibrium of still lifes and
+small oscillators that no longer interfere with one another.
+
+<img width="999" height="662" alt="log" src="https://github.com/user-attachments/assets/8d6b5d0c-82af-45dd-a6d3-1ae7c98ddd2f" />
+
 ## Setup
 
 ```bash
@@ -67,10 +88,17 @@ The menu lets you choose whether the simulation runs indefinitely or stops
 after a given number of generations, and how long each generation is displayed
 (20 to 2000 milliseconds).
 
-Press `q` while the simulation window is focused to stop it early.
+While the simulation is running:
+
+- `space` pauses and resumes
+- `q` stops the simulation
+
+Once the simulation ends, the population history is plotted automatically.
 
 ## Project structure
 
-- `main.py` — entry point, connects the menu to the simulation
-- `graphical_interface.py` — Tkinter configuration menu
-- `simulation.py` — grid logic and OpenCV rendering
+- `main.py` - entry point, connects menu, simulation and analysis
+- `src/graphical_interface.py` - Tkinter configuration menu
+- `src/simulation.py` — grid logic, OpenCV rendering, CSV logging
+- `src/diagram.py` — reads the CSV and plots the population history
+- `data/population.csv` — written on every run
