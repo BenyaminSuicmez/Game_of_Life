@@ -57,6 +57,7 @@ def show_menu():
             config["generations"] = 100000000000
             config["delay"] = velocity.get()
 
+            root.quit()
             root.destroy()
 
         if mode.get() == "custom":
@@ -70,6 +71,7 @@ def show_menu():
                 config["generations"] = int(text)
                 config["delay"] = velocity.get()
 
+                root.quit()
                 root.destroy()
 
 

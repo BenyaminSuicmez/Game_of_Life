@@ -89,19 +89,11 @@ def game_of_life_simulation(generations, delay):
 
 
 
-    # Holding the last state instead of destroying all windows
-    while True:
-         key = cv2.waitKey(delay) & 0xFF
-
-         if key == ord("q"):
-              break
-
-         else:
-              cv2.imshow("The Game of Life", display_board)
 
 
     # Clean finish
     cv2.destroyAllWindows()
+    cv2.waitKey(1)
     f.close()
               
   
