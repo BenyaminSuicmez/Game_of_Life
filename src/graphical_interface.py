@@ -1,5 +1,5 @@
 import tkinter as tk
-import time as t
+from src.patterns import PATTERNS
 
 def show_menu():
 
@@ -16,7 +16,7 @@ def show_menu():
 
     # Adding a heading
     heading = tk.Label(root, text="The Game of Life", font=("Times New Roman", 30, "bold"), bg="#E8E6E1", fg="#2A2A28")
-    heading.grid(row=0, column=0, pady=80)
+    heading.grid(row=0, column=0, pady=65)
     root.grid_columnconfigure(0, weight=1)
 
     # Adding configuration options for the user
@@ -47,7 +47,14 @@ def show_menu():
 
     # Creating a controller so the user can decide how fast the simulation should be
     velocity = tk.Scale(root, from_=20, to=2000, length=300, resolution=10, orient="horizontal", label="Refresh (ms)", bg="#E8E6E1")
-    velocity.grid(row=4, column=0, pady=15)
+    velocity.grid(row=4, column=0, pady=25)
+
+    # Letting the user decide, which kind of game-style he wants to see
+    options = ["Random"] + list(PATTERNS.keys())
+    
+    choice = tk.StringVar(value="Random")
+    menu = tk.OptionMenu(root, choice, "Glider", "Blinker", "Pulsar", "Gosper Glider Gun", "Lightweight Spaceship")
+    menu.grid(column=0, row=5)
 
     # Creating the start button and its logic
     def start_game():
@@ -56,6 +63,8 @@ def show_menu():
             gen_entry.config(highlightbackground="white")
             config["generations"] = 100000000000
             config["delay"] = velocity.get()
+            config["pattern"] = choice.get()
+            
 
             root.quit()
             root.destroy()
@@ -70,18 +79,21 @@ def show_menu():
                 gen_entry.config(bg="white")
                 config["generations"] = int(text)
                 config["delay"] = velocity.get()
+                config["pattern"] = choice.get()
 
                 root.quit()
                 root.destroy()
 
 
+    
+
     start_button = tk.Button(root, text="START", font=("Times New Roman", 20), highlightbackground="#4CAF50", command=start_game)
-    start_button.grid(row=5, column=0, pady=40)
+    start_button.grid(row=6, column=0, pady=40)
 
 
     # Giving user notes
     notes = tk.Label(root, text="Note: If selecting 'Custom Generation Limit' input must be an integer greater than 0.", background="#E8E6E1")
-    notes.grid(row=6, column=0)
+    notes.grid(row=7, column=0, pady=15)
 
     root.mainloop()
     return config

@@ -1,10 +1,11 @@
 import numpy as np
 import cv2
 import csv
+from src.patterns import PATTERNS, place_pattern
 
 
 
-def game_of_life_simulation(generations, delay):
+def game_of_life_simulation(generations, delay, pattern):
 
     # Creating two booleans to check whether to pause the simulation or not
     paused = False
@@ -17,8 +18,13 @@ def game_of_life_simulation(generations, delay):
     # Initializing an index for the while loop
     i = 0
 
-    # Creating the game board
-    board = np.random.choice((0,1), size=(800, 800), p=[0.7, 0.3]).astype(np.uint8)
+    # Initializing the game board
+    if pattern == "Random":
+        board = np.random.choice((0, 1), size=(800, 800), p=[0.7, 0.3]).astype(np.uint8)
+        
+    else:
+        pattern_array, size = PATTERNS[pattern]
+        board = place_pattern(pattern_array, size)
 
 
     while i <= generations:
