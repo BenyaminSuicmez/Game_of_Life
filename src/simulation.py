@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import csv
 
 
 
@@ -8,6 +9,10 @@ def game_of_life_simulation(generations, delay):
     # Creating two booleans to check whether to pause the simulation or not
     paused = False
     
+    # Opening the .csv file
+    f = open("data/population.csv", "w", newline="")
+    writer = csv.writer(f)
+    writer.writerow(["generation", "population"])
 
     # Initializing an index for the while loop
     i = 0
@@ -55,6 +60,12 @@ def game_of_life_simulation(generations, delay):
               key = cv2.waitKey(delay) & 0xFF
 
               i += 1
+              
+              # Saving the amount of living cells for later visualisation
+              
+              writer.writerow([i, board.sum()])
+                   
+                   
                                    
               if key == ord(" "):
                   paused = True
@@ -91,8 +102,8 @@ def game_of_life_simulation(generations, delay):
 
     # Clean finish
     cv2.destroyAllWindows()
+    f.close()
               
-
   
 
     
