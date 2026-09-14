@@ -17,7 +17,7 @@ def game_of_life_simulation(generations, delay):
 
 
     while i <= generations:
-         if not paused and i <= generations:
+          if not paused and i <= generations:
               
               shift1 = np.roll(board, shift = 1, axis=0)
               shift2 = np.roll(board, shift = -1, axis=0)
@@ -63,7 +63,7 @@ def game_of_life_simulation(generations, delay):
                   break
 
 
-         if paused and i <= generations:
+          if paused and i <= generations:
               cv2.imshow("The Game of Life", display_board)
 
               # Interpreting the pressed key just once
@@ -74,6 +74,19 @@ def game_of_life_simulation(generations, delay):
 
               if key == ord("q"):
                    break
+
+
+
+
+    # Holding the last state instead of destroying all windows
+    while True:
+         key = cv2.waitKey(delay) & 0xFF
+
+         if key == ord("q"):
+              break
+
+         else:
+              cv2.imshow("The Game of Life", display_board)
 
 
     # Clean finish
